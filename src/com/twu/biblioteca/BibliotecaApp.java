@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class BibliotecaApp {
@@ -36,7 +37,7 @@ public class BibliotecaApp {
         String MAIN_MENU_HEAD = "---------------\n" + "" +
                 "Menu\n"
                 + "---------------";
-        String[] MAIN_MENU_ITEM = {"1. List Books"};
+        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Quit"};
         String MAIN_MENU_TIP = "---------------\nPlease select your option (1-1):";
         System.out.println(MAIN_MENU_HEAD);
         for (String item : MAIN_MENU_ITEM) {
@@ -45,17 +46,24 @@ public class BibliotecaApp {
         System.out.println(MAIN_MENU_TIP);
 
         Scanner input = new Scanner(System.in);
-        boolean userInputIsValid = false;
-        while (!userInputIsValid) {
-            Integer userChoice = input.nextInt();
-            switch (userChoice) {
-                case 1:
-                    this.listBook();
-                    userInputIsValid = true;
-                    break;
-                default:
-                    System.out.println("Select a valid option!");
+        boolean toQuit = false;
+        try {
+            while (!toQuit) {
+                Integer userChoice = input.nextInt();
+                switch (userChoice) {
+                    case 1:
+                        this.listBook();
+                        continue;
+                    case 2:
+                        System.out.println("Bye Bye!");
+                        toQuit = true;
+                        break;
+                    default:
+                        System.out.println("Select a valid option!");
+                }
             }
+        } catch (NoSuchElementException ex) {
+
         }
     }
 }

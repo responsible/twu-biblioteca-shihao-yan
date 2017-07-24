@@ -7,6 +7,8 @@ import org.junit.Test;
 
 import java.io.*;
 
+import com.twu.biblioteca.TestHelper.*;
+
 import static org.junit.Assert.assertEquals;
 
 public class ExampleTest {
@@ -22,9 +24,10 @@ public class ExampleTest {
     private final String MAIN_MENU_HEAD = "---------------\n" +
             "Menu\n"
             + "---------------\n";
-    private final String[] MAIN_MENU_ITEM = {"1. List Books"};
-    private final String MAIN_MENU_TIP = "\n---------------\nPlease select your option (1-1):";
+    private final String[] MAIN_MENU_ITEM = {"1. List Books", "2. Quit"};
+    private final String MAIN_MENU_TIP = "---------------\nPlease select your option (1-1):";
     private final String MAIN_MENU_ERR_MSG = "Select a valid option!\n";
+    private final String MAIN_MENU_QUIT_MSG = "Bye Bye!";
 
     @Before
     public void setOutStream() {
@@ -43,7 +46,7 @@ public class ExampleTest {
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         BibliotecaApp.main(null);
         assertEquals(WELCOME_MSG + MAIN_MENU_HEAD +
-                MAIN_MENU_ITEM[0] +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
                 MAIN_MENU_TIP + "\n" +
                 String.join("\n", BOOKS_NAME), outputStream.toString().trim());
     }
@@ -75,7 +78,7 @@ public class ExampleTest {
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_HEAD +
-                MAIN_MENU_ITEM[0] +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
                 MAIN_MENU_TIP + "\n" +
                 String.join("\n", BOOKS_NAME), outputStream.toString().trim());
     }
@@ -85,9 +88,21 @@ public class ExampleTest {
         System.setIn(new ByteArrayInputStream("0 1".getBytes()));
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_HEAD +
-                MAIN_MENU_ITEM[0] +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
                 MAIN_MENU_TIP + "\n" +
                 MAIN_MENU_ERR_MSG +
                 String.join("\n", BOOKS_NAME), outputStream.toString().trim());
+    }
+
+    @Test
+    public void testMainMenuUntilQuit() {
+        System.setIn(new ByteArrayInputStream("1 1 2".getBytes()));
+        bibliotecaApp.printMainMenu();
+        assertEquals(MAIN_MENU_HEAD +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
+                MAIN_MENU_TIP + "\n" +
+                String.join("\n", BOOKS_NAME) + "\n" +
+                String.join("\n", BOOKS_NAME) + "\n" +
+                MAIN_MENU_QUIT_MSG, outputStream.toString().trim());
     }
 }
