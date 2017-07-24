@@ -23,7 +23,8 @@ public class ExampleTest {
             "Menu\n"
             + "---------------\n";
     private final String[] MAIN_MENU_ITEM = {"1. List Books"};
-    private final String MAIN_MENU_TIP = "\n---------------\nPlease select your choice (1-1):";
+    private final String MAIN_MENU_TIP = "\n---------------\nPlease select your option (1-1):";
+    private final String MAIN_MENU_ERR_MSG = "Select a valid option!\n";
 
     @Before
     public void setOutStream() {
@@ -76,6 +77,17 @@ public class ExampleTest {
         assertEquals(MAIN_MENU_HEAD +
                 MAIN_MENU_ITEM[0] +
                 MAIN_MENU_TIP + "\n" +
+                String.join("\n", BOOKS_NAME), outputStream.toString().trim());
+    }
+
+    @Test
+    public void testMainMenuWithInvalidOption() {
+        System.setIn(new ByteArrayInputStream("0 1".getBytes()));
+        bibliotecaApp.printMainMenu();
+        assertEquals(MAIN_MENU_HEAD +
+                MAIN_MENU_ITEM[0] +
+                MAIN_MENU_TIP + "\n" +
+                MAIN_MENU_ERR_MSG +
                 String.join("\n", BOOKS_NAME), outputStream.toString().trim());
     }
 }

@@ -37,7 +37,7 @@ public class BibliotecaApp {
                 "Menu\n"
                 + "---------------";
         String[] MAIN_MENU_ITEM = {"1. List Books"};
-        String MAIN_MENU_TIP = "---------------\nPlease select your choice (1-1):";
+        String MAIN_MENU_TIP = "---------------\nPlease select your option (1-1):";
         System.out.println(MAIN_MENU_HEAD);
         for (String item : MAIN_MENU_ITEM) {
             System.out.println(item);
@@ -45,11 +45,17 @@ public class BibliotecaApp {
         System.out.println(MAIN_MENU_TIP);
 
         Scanner input = new Scanner(System.in);
-        Integer userChoice = input.nextInt();
-        switch (userChoice) {
-            case 1:
-                this.listBook();
-                break;
+        boolean userInputIsValid = false;
+        while (!userInputIsValid) {
+            Integer userChoice = input.nextInt();
+            switch (userChoice) {
+                case 1:
+                    this.listBook();
+                    userInputIsValid = true;
+                    break;
+                default:
+                    System.out.println("Select a valid option!");
+            }
         }
     }
 }
