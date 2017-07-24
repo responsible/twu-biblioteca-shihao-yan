@@ -25,7 +25,7 @@ public class ExampleTest {
             "Menu\n"
             + "---------------\n";
     private final String[] MAIN_MENU_ITEM = {"1. List Books", "2. Quit"};
-    private final String MAIN_MENU_TIP = "---------------\nPlease select your option (1-1):";
+    private final String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
     private final String MAIN_MENU_ERR_MSG = "Select a valid option!\n";
     private final String MAIN_MENU_QUIT_MSG = "Bye Bye!";
 
@@ -105,4 +105,5 @@ public class ExampleTest {
                 String.join("\n", BOOKS_NAME) + "\n" +
                 MAIN_MENU_QUIT_MSG, outputStream.toString().trim());
     }
+
 }
