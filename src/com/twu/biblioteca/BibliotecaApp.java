@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -20,7 +21,7 @@ public class BibliotecaApp {
 
     public void listBook() {
         for (Book book : books) {
-            System.out.println(book.getName());
+            if (book.getStatus() == Book.Status.available) System.out.println(book.getName());
         }
     }
 
@@ -37,7 +38,7 @@ public class BibliotecaApp {
         String MAIN_MENU_HEAD = "---------------\n" + "" +
                 "Menu\n"
                 + "---------------";
-        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Quit"};
+        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Quit"};
         String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
         System.out.println(MAIN_MENU_HEAD);
         for (String item : MAIN_MENU_ITEM) {
@@ -55,6 +56,8 @@ public class BibliotecaApp {
                         this.listBook();
                         continue;
                     case 2:
+                        this.checkoutBook(input.next());
+                    case 3:
                         System.out.println("Bye Bye!");
                         toQuit = true;
                         break;
@@ -65,5 +68,10 @@ public class BibliotecaApp {
         } catch (NoSuchElementException ex) {
 
         }
+    }
+
+    public void checkoutBook(String name) {
+        int bookId = Arrays.asList(books).indexOf(new Book(name));
+        books[bookId].setStatus(Book.Status.checkedout);
     }
 }
