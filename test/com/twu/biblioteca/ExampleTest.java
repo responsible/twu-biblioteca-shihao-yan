@@ -137,4 +137,17 @@ public class ExampleTest {
                 BOOK_CHECKOUT_UNSUCCESS + "\n" +
                 BOOK_CHECKOUT_UNSUCCESS, outputStream.toString().trim());
     }
+
+    @Test
+    public void testReturnBook() {
+        System.setIn(new ByteArrayInputStream("2 Book2".getBytes()));
+        bibliotecaApp.printMainMenu();
+        bibliotecaApp.returnBook("Book2");
+        bibliotecaApp.listBook();
+        assertEquals(MAIN_MENU_HEAD +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
+                MAIN_MENU_TIP + "\n" +
+                BOOK_CHECKOUT_SUCCESS + "\n" +
+                String.join("\n", BOOKS_NAME), outputStream.toString().trim());
+    }
 }

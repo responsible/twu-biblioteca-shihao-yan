@@ -83,4 +83,9 @@ public class BibliotecaApp {
             System.out.println(BOOK_CHECKOUT_SUCCESS);
         }
     }
+
+    public void returnBook(String name) {
+        int bookId = Arrays.asList(books).indexOf(new Book(name));
+        books[bookId].setStatus(Book.Status.available);
+    }
 }
