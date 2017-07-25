@@ -8,12 +8,22 @@ public class Movie {
     private Integer year;
     private String director;
     private Integer rating;
+    private Status status;
+
+    public enum Status {
+        available, checkedout;
+    }
+
+    public Movie(String name) {
+        this(name, null, null, null);
+    }
 
     public Movie(String name, Integer year, String director, Integer rating) {
         this.name = name;
         this.year = year;
         this.director = director;
         this.rating = rating;
+        this.status = Status.available;
     }
 
     public Movie(String name, Integer year, String director) {
@@ -50,5 +60,28 @@ public class Movie {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Movie movie = (Movie) o;
+
+        return name != null ? name.equals(movie.name) : movie.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }

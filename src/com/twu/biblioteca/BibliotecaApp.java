@@ -124,7 +124,21 @@ public class BibliotecaApp {
                 "----------------------------------------";
         System.out.println(MOVIE_COLUMN);
         for (Movie movie : movies) {
-            System.out.println(String.format("%s\t%d\t%s\t%s", movie.getName(), movie.getYear(), movie.getDirector(), movie.getRating() == null ? "unrated" : movie.getRating()));
+            if (movie.getStatus() == Movie.Status.available)
+                System.out.println(String.format("%s\t%d\t%s\t%s", movie.getName(), movie.getYear(), movie.getDirector(), movie.getRating() == null ? "unrated" : movie.getRating()));
+        }
+    }
+
+    public void checkoutMovie(String name) {
+        String MOVIE_CHECKOUT_SUCCESS = "Thank you! Enjoy the movie.";
+        String MOVIE_CHECKOUT_UNSUCCESS = "That movie is not available.";
+
+        int movieId = Arrays.asList(movies).indexOf(new Movie(name));
+        if (movieId != -1 && movies[movieId].getStatus() == Movie.Status.available) {
+            movies[movieId].setStatus(Movie.Status.checkedout);
+            System.out.println(MOVIE_CHECKOUT_SUCCESS);
+        } else {
+            System.out.println(MOVIE_CHECKOUT_UNSUCCESS);
         }
     }
 }

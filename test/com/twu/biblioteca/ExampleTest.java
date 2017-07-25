@@ -46,6 +46,8 @@ public class ExampleTest {
     private final Integer[] MOVIES_YEAR = {2015, 2016, 2017};
     private final String[] MOVIES_DIRECTOR = {"Director1", "Director2", "Director3"};
     private final Integer[] MOVIES_RATING = {8, null, 10};
+    private final String MOVIE_CHECKOUT_SUCCESS = "Thank you! Enjoy the movie.";
+    private final String MOVIE_CHECKOUT_UNSUCCESS = "That movie is not available.";
 
     @Before
     public void setOutStream() {
@@ -189,5 +191,15 @@ public class ExampleTest {
                         String.format("%s\t%d\t%s\t%s\n", MOVIES_NAME[1], MOVIES_YEAR[1], MOVIES_DIRECTOR[1], MOVIES_RATING[1] == null ? "unrated" : null) +
                         String.format("%s\t%d\t%s\t%s", MOVIES_NAME[2], MOVIES_YEAR[2], MOVIES_DIRECTOR[2], MOVIES_RATING[2]),
                 getOutput());
+    }
+
+    @Test
+    public void testCheckoutMovie() {
+        bibliotecaApp.checkoutMovie("Movie2");
+        bibliotecaApp.listMovie();
+        assertEquals(MOVIE_CHECKOUT_SUCCESS + "\n" +
+                MOVIE_COLUMN +
+                String.format("%s\t%d\t%s\t%s\n", MOVIES_NAME[0], MOVIES_YEAR[0], MOVIES_DIRECTOR[0], MOVIES_RATING[0]) +
+                String.format("%s\t%d\t%s\t%s", MOVIES_NAME[2], MOVIES_YEAR[2], MOVIES_DIRECTOR[2], MOVIES_RATING[2]), getOutput());
     }
 }
