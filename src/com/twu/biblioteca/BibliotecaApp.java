@@ -89,12 +89,18 @@ public class BibliotecaApp {
         String BOOK_CHECKOUT_SUCCESS = "Thank you! Enjoy the book.";
         String BOOK_CHECKOUT_UNSUCCESS = "That book is not available.";
 
-        Book book = findBookByName(name);
-        if (book == null || book.getStatus() == Book.Status.checkedout) {
-            System.out.println(BOOK_CHECKOUT_UNSUCCESS);
-        } else {
-            book.setStatus(Book.Status.checkedout);
-            System.out.println(BOOK_CHECKOUT_SUCCESS);
+        User user = UserManager.getLoginedUser();
+        if (user == null) {
+            user = (new UserManager()).login();
+        }
+        if (user != null) {
+            Book book = findBookByName(name);
+            if (book == null || book.getStatus() == Book.Status.checkedout) {
+                System.out.println(BOOK_CHECKOUT_UNSUCCESS);
+            } else {
+                book.setStatus(Book.Status.checkedout);
+                System.out.println(BOOK_CHECKOUT_SUCCESS);
+            }
         }
     }
 
@@ -102,12 +108,18 @@ public class BibliotecaApp {
         String BOOK_RETURN_SUCCESS = "Thank you for returning the book.";
         String BOOK_RETURN_UNSUCCESS = "That is not a valid book to return.";
 
-        Book book = findBookByName(name);
-        if (book == null || book.getStatus() == Book.Status.available)
-            System.out.println(BOOK_RETURN_UNSUCCESS);
-        else {
-            book.setStatus(Book.Status.available);
-            System.out.println(BOOK_RETURN_SUCCESS);
+        User user = UserManager.getLoginedUser();
+        if (user == null) {
+            user = (new UserManager()).login();
+        }
+        if (user != null) {
+            Book book = findBookByName(name);
+            if (book == null || book.getStatus() == Book.Status.available)
+                System.out.println(BOOK_RETURN_UNSUCCESS);
+            else {
+                book.setStatus(Book.Status.available);
+                System.out.println(BOOK_RETURN_SUCCESS);
+            }
         }
     }
 

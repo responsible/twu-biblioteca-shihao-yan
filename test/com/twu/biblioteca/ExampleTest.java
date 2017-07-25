@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
+import java.util.Scanner;
 
 import com.twu.biblioteca.TestHelper.*;
 
@@ -49,10 +50,20 @@ public class ExampleTest {
     private final String MOVIE_CHECKOUT_SUCCESS = "Thank you! Enjoy the movie.";
     private final String MOVIE_CHECKOUT_UNSUCCESS = "That movie is not available.";
 
+    private final String USER_LIBRARY_NUMBER = "001-1000";
+    private final String USER_PASSWORD = "123123";
+    private final String USER_LIBRARY_NUMBER_INPUT_PROMPT = "Login:\nPlease input your library number:";
+    private final String USER_PASSWORD_INPUT_PROMPT = "Please input your password:";
+
     @Before
     public void setOutStream() {
         System.setOut(new PrintStream(outputStream));
         System.setErr(new PrintStream(errStream));
+    }
+
+    @Before
+    public void cleanUserLoginStatus() {
+        UserManager.cleanUser();
     }
 
     @After
@@ -128,6 +139,7 @@ public class ExampleTest {
 
     @Test
     public void testCheckoutBook() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         bibliotecaApp.checkoutBook("Book2");
         bibliotecaApp.listBook();
         assertEquals(BOOK_CHECKOUT_SUCCESS + "\n" +
@@ -136,6 +148,7 @@ public class ExampleTest {
 
     @Test
     public void testCheckoutBookSuccessful() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("2 Book2");
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
@@ -144,6 +157,7 @@ public class ExampleTest {
 
     @Test
     public void testCheckoutBookUnsuccessful() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("2 Book2 2 Book2 2 Book0");
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
@@ -154,6 +168,7 @@ public class ExampleTest {
 
     @Test
     public void testReturnBook() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("2 Book2");
         bibliotecaApp.printMainMenu();
         bibliotecaApp.returnBook("Book2");
@@ -166,6 +181,7 @@ public class ExampleTest {
 
     @Test
     public void testReturnBookSuccessful() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("2 Book2 3 Book2");
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
@@ -175,6 +191,7 @@ public class ExampleTest {
 
     @Test
     public void testReturnBookUnsuccessful() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("3 Book2 3 Book0");
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
@@ -201,5 +218,26 @@ public class ExampleTest {
                 MOVIE_COLUMN +
                 String.format("%s\t%d\t%s\t%s\n", MOVIES_NAME[0], MOVIES_YEAR[0], MOVIES_DIRECTOR[0], MOVIES_RATING[0]) +
                 String.format("%s\t%d\t%s\t%s", MOVIES_NAME[2], MOVIES_YEAR[2], MOVIES_DIRECTOR[2], MOVIES_RATING[2]), getOutput());
+    }
+
+    @Test
+    public void testUserAuthSuccess() {
+        assertEquals(new User("001-1000"), UserManager.auth("001-1000", "123123"));
+    }
+
+    @Test
+    public void testUserAuthFail() {
+        assertEquals(null, UserManager.auth("001-1000", "123111"));
+        assertEquals(null, UserManager.auth("123-1234", "123111"));
+    }
+
+    @Test
+    public void testCheckoutLoginProcess() {
+        mockUserInput("001-1000 123123");
+        bibliotecaApp.checkoutBook("Book2");
+        assertEquals(USER_LIBRARY_NUMBER_INPUT_PROMPT + "\n" +
+                        USER_PASSWORD_INPUT_PROMPT + "\n" +
+                        BOOK_CHECKOUT_SUCCESS,
+                getOutput());
     }
 }
