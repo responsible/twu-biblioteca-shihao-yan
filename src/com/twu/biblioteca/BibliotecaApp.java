@@ -89,9 +89,14 @@ public class BibliotecaApp {
 
     public void returnBook(String name) {
         String BOOK_RETURN_SUCCESS = "Thank you for returning the book.";
+        String BOOK_RETURN_UNSUCCESS = "That is not a valid book to return.";
 
         int bookId = Arrays.asList(books).indexOf(new Book(name));
-        books[bookId].setStatus(Book.Status.available);
-        System.out.println(BOOK_RETURN_SUCCESS);
+        if (bookId == -1 || books[bookId].getStatus() == Book.Status.available)
+            System.out.println(BOOK_RETURN_UNSUCCESS);
+        else {
+            books[bookId].setStatus(Book.Status.available);
+            System.out.println(BOOK_RETURN_SUCCESS);
+        }
     }
 }

@@ -31,6 +31,7 @@ public class ExampleTest {
     private final String BOOK_CHECKOUT_SUCCESS = "Thank you! Enjoy the book.";
     private final String BOOK_CHECKOUT_UNSUCCESS = "That book is not available.";
     private final String BOOK_RETURN_SUCCESS = "Thank you for returning the book.";
+    private final String BOOK_RETURN_UNSUCCESS = "That is not a valid book to return.";
 
     @Before
     public void setOutStream() {
@@ -162,5 +163,16 @@ public class ExampleTest {
                 MAIN_MENU_TIP + "\n" +
                 BOOK_CHECKOUT_SUCCESS + "\n" +
                 BOOK_RETURN_SUCCESS, outputStream.toString().trim());
+    }
+
+    @Test
+    public void testReturnBookUnsuccessful() {
+        System.setIn(new ByteArrayInputStream("3 Book2 3 Book0".getBytes()));
+        bibliotecaApp.printMainMenu();
+        assertEquals(MAIN_MENU_HEAD +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
+                MAIN_MENU_TIP + "\n" +
+                BOOK_RETURN_UNSUCCESS + "\n" +
+                BOOK_RETURN_UNSUCCESS, outputStream.toString().trim());
     }
 }
