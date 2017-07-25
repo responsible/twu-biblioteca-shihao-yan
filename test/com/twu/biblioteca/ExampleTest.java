@@ -29,6 +29,7 @@ public class ExampleTest {
     private final String MAIN_MENU_ERR_MSG = "Select a valid option!\n";
     private final String MAIN_MENU_QUIT_MSG = "Bye Bye!";
     private final String BOOK_CHECKOUT_SUCCESS = "Thank you! Enjoy the book.";
+    private final String BOOK_CHECKOUT_UNSUCCESS = "That book is not available.";
 
     @Before
     public void setOutStream() {
@@ -123,5 +124,17 @@ public class ExampleTest {
                 TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
                 MAIN_MENU_TIP + "\n" +
                 BOOK_CHECKOUT_SUCCESS, outputStream.toString().trim());
+    }
+
+    @Test
+    public void testCheckoutBookUnsuccessful() {
+        System.setIn(new ByteArrayInputStream("2 Book2 2 Book2 2 Book0".getBytes()));
+        bibliotecaApp.printMainMenu();
+        assertEquals(MAIN_MENU_HEAD +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
+                MAIN_MENU_TIP + "\n" +
+                BOOK_CHECKOUT_SUCCESS + "\n" +
+                BOOK_CHECKOUT_UNSUCCESS + "\n" +
+                BOOK_CHECKOUT_UNSUCCESS, outputStream.toString().trim());
     }
 }

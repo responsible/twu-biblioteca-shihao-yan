@@ -73,9 +73,14 @@ public class BibliotecaApp {
 
     public void checkoutBook(String name) {
         String BOOK_CHECKOUT_SUCCESS = "Thank you! Enjoy the book.";
+        String BOOK_CHECKOUT_UNSUCCESS = "That book is not available.";
 
         int bookId = Arrays.asList(books).indexOf(new Book(name));
-        books[bookId].setStatus(Book.Status.checkedout);
-        System.out.println(BOOK_CHECKOUT_SUCCESS);
+        if (bookId == -1 || books[bookId].getStatus() == Book.Status.checkedout) {
+            System.out.println(BOOK_CHECKOUT_UNSUCCESS);
+        } else {
+            books[bookId].setStatus(Book.Status.checkedout);
+            System.out.println(BOOK_CHECKOUT_SUCCESS);
+        }
     }
 }
