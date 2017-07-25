@@ -38,7 +38,7 @@ public class BibliotecaApp {
         String MAIN_MENU_HEAD = "---------------\n" + "" +
                 "Menu\n"
                 + "---------------";
-        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Quit"};
+        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. Quit"};
         String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
         System.out.println(MAIN_MENU_HEAD);
         for (String item : MAIN_MENU_ITEM) {

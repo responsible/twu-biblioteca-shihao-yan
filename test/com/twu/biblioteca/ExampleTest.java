@@ -24,7 +24,7 @@ public class ExampleTest {
     private final String MAIN_MENU_HEAD = "---------------\n" +
             "Menu\n"
             + "---------------\n";
-    private final String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Quit"};
+    private final String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. Quit"};
     private final String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
     private final String MAIN_MENU_ERR_MSG = "Select a valid option!\n";
     private final String MAIN_MENU_QUIT_MSG = "Bye Bye!";
