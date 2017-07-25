@@ -59,6 +59,9 @@ public class BibliotecaApp {
                         this.checkoutBook(input.next());
                         break;
                     case 3:
+                        this.returnBook(input.next());
+                        break;
+                    case 4:
                         System.out.println("Bye Bye!");
                         toQuit = true;
                         break;
@@ -85,7 +88,10 @@ public class BibliotecaApp {
     }
 
     public void returnBook(String name) {
+        String BOOK_RETURN_SUCCESS = "Thank you for returning the book.";
+
         int bookId = Arrays.asList(books).indexOf(new Book(name));
         books[bookId].setStatus(Book.Status.available);
+        System.out.println(BOOK_RETURN_SUCCESS);
     }
 }

@@ -30,6 +30,7 @@ public class ExampleTest {
     private final String MAIN_MENU_QUIT_MSG = "Bye Bye!";
     private final String BOOK_CHECKOUT_SUCCESS = "Thank you! Enjoy the book.";
     private final String BOOK_CHECKOUT_UNSUCCESS = "That book is not available.";
+    private final String BOOK_RETURN_SUCCESS = "Thank you for returning the book.";
 
     @Before
     public void setOutStream() {
@@ -98,7 +99,7 @@ public class ExampleTest {
 
     @Test
     public void testMainMenuUntilQuit() {
-        System.setIn(new ByteArrayInputStream("1 1 3".getBytes()));
+        System.setIn(new ByteArrayInputStream("1 1 4".getBytes()));
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_HEAD +
                 TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
@@ -148,6 +149,18 @@ public class ExampleTest {
                 TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
                 MAIN_MENU_TIP + "\n" +
                 BOOK_CHECKOUT_SUCCESS + "\n" +
+                BOOK_RETURN_SUCCESS + "\n" +
                 String.join("\n", BOOKS_NAME), outputStream.toString().trim());
+    }
+
+    @Test
+    public void testReturnBookSuccessful() {
+        System.setIn(new ByteArrayInputStream("2 Book2 3 Book2".getBytes()));
+        bibliotecaApp.printMainMenu();
+        assertEquals(MAIN_MENU_HEAD +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
+                MAIN_MENU_TIP + "\n" +
+                BOOK_CHECKOUT_SUCCESS + "\n" +
+                BOOK_RETURN_SUCCESS, outputStream.toString().trim());
     }
 }
