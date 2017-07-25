@@ -46,6 +46,10 @@ public class BibliotecaApp {
         }
         System.out.println(MAIN_MENU_TIP);
 
+        menuChoiceHandler();
+    }
+
+    private void menuChoiceHandler() {
         Scanner input = new Scanner(System.in);
         boolean toQuit = false;
         try {
@@ -78,11 +82,11 @@ public class BibliotecaApp {
         String BOOK_CHECKOUT_SUCCESS = "Thank you! Enjoy the book.";
         String BOOK_CHECKOUT_UNSUCCESS = "That book is not available.";
 
-        int bookId = Arrays.asList(books).indexOf(new Book(name));
-        if (bookId == -1 || books[bookId].getStatus() == Book.Status.checkedout) {
+        Book book = findBookByName(name);
+        if (book == null || book.getStatus() == Book.Status.checkedout) {
             System.out.println(BOOK_CHECKOUT_UNSUCCESS);
         } else {
-            books[bookId].setStatus(Book.Status.checkedout);
+            book.setStatus(Book.Status.checkedout);
             System.out.println(BOOK_CHECKOUT_SUCCESS);
         }
     }
@@ -91,12 +95,20 @@ public class BibliotecaApp {
         String BOOK_RETURN_SUCCESS = "Thank you for returning the book.";
         String BOOK_RETURN_UNSUCCESS = "That is not a valid book to return.";
 
-        int bookId = Arrays.asList(books).indexOf(new Book(name));
-        if (bookId == -1 || books[bookId].getStatus() == Book.Status.available)
+        Book book = findBookByName(name);
+        if (book == null || book.getStatus() == Book.Status.available)
             System.out.println(BOOK_RETURN_UNSUCCESS);
         else {
-            books[bookId].setStatus(Book.Status.available);
+            book.setStatus(Book.Status.available);
             System.out.println(BOOK_RETURN_SUCCESS);
+        }
+    }
+
+    private Book findBookByName(String name) {
+        try {
+            return books[Arrays.asList(books).indexOf(new Book(name))];
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            return null;
         }
     }
 }
