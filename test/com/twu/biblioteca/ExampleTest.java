@@ -28,6 +28,7 @@ public class ExampleTest {
     private final String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
     private final String MAIN_MENU_ERR_MSG = "Select a valid option!\n";
     private final String MAIN_MENU_QUIT_MSG = "Bye Bye!";
+    private final String BOOK_CHECKOUT_SUCCESS = "Thank you! Enjoy the book.";
 
     @Before
     public void setOutStream() {
@@ -108,9 +109,19 @@ public class ExampleTest {
 
     @Test
     public void testCheckoutBook() {
-        System.setIn(new ByteArrayInputStream("2".getBytes()));
         bibliotecaApp.checkoutBook("Book2");
         bibliotecaApp.listBook();
-        assertEquals(String.join("\n", BOOKS_NAME[0], BOOKS_NAME[2]), outputStream.toString().trim());
+        assertEquals(BOOK_CHECKOUT_SUCCESS + "\n" +
+                String.join("\n", BOOKS_NAME[0], BOOKS_NAME[2]), outputStream.toString().trim());
+    }
+
+    @Test
+    public void testCheckoutBookSuccessful() {
+        System.setIn(new ByteArrayInputStream("2 Book2".getBytes()));
+        bibliotecaApp.printMainMenu();
+        assertEquals(MAIN_MENU_HEAD +
+                TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
+                MAIN_MENU_TIP + "\n" +
+                BOOK_CHECKOUT_SUCCESS, outputStream.toString().trim());
     }
 }
