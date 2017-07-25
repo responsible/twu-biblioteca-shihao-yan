@@ -9,6 +9,10 @@ public class BibliotecaApp {
             new Book("Book2", "Author2", 2016),
             new Book("Book3", "Author3", 2017)};
 
+    private Movie[] movies = {new Movie("Movie1", 2015, "Director1", 8),
+            new Movie("Movie2", 2016, "Director2"),
+            new Movie("Movie3", 2017, "Director3", 10)};
+
     public static void main(String[] args) {
         BibliotecaApp bibliotecaApp = new BibliotecaApp();
         bibliotecaApp.printWelcome();
@@ -38,7 +42,7 @@ public class BibliotecaApp {
         String MAIN_MENU_HEAD = "---------------\n" + "" +
                 "Menu\n"
                 + "---------------";
-        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. Quit"};
+        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. List Movies", "5. Quit"};
         String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
         System.out.println(MAIN_MENU_HEAD);
         for (String item : MAIN_MENU_ITEM) {
@@ -66,6 +70,9 @@ public class BibliotecaApp {
                         this.returnBook(input.next());
                         break;
                     case 4:
+                        this.listMovie();
+                        break;
+                    case 5:
                         System.out.println("Bye Bye!");
                         toQuit = true;
                         break;
@@ -109,6 +116,15 @@ public class BibliotecaApp {
             return books[Arrays.asList(books).indexOf(new Book(name))];
         } catch (ArrayIndexOutOfBoundsException ex) {
             return null;
+        }
+    }
+
+    public void listMovie() {
+        String MOVIE_COLUMN = "Name\tYear\tDirector\tRating\n" +
+                "----------------------------------------";
+        System.out.println(MOVIE_COLUMN);
+        for (Movie movie : movies) {
+            System.out.println(String.format("%s\t%d\t%s\t%s", movie.getName(), movie.getYear(), movie.getDirector(), movie.getRating() == null ? "unrated" : movie.getRating()));
         }
     }
 }

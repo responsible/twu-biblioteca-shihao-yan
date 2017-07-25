@@ -16,7 +16,7 @@ public class ExampleTest {
     private final OutputStream errStream = new ByteArrayOutputStream();
     private BibliotecaApp bibliotecaApp = new BibliotecaApp();
 
-    private final String WELCOME_MSG = "Welcome to Biblioteca Public Library!\n";
+    private final String WELCOME_MSG = "Welcome to Biblioteca Public Library!";
 
     private final String[] BOOKS_NAME = {"Book1", "Book2", "Book3"};
     private final String[] BOOKS_AUTHOR = {"Author1", "Author2", "Author3"};
@@ -27,7 +27,7 @@ public class ExampleTest {
     private final String MAIN_MENU_HEAD = "---------------\n" +
             "Menu\n"
             + "---------------\n";
-    private final String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. Quit"};
+    private final String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. List Movies", "5. Quit"};
     private final String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
     private final String MAIN_MENU_FULL_PROMPT = MAIN_MENU_HEAD +
             TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
@@ -39,6 +39,13 @@ public class ExampleTest {
     private final String BOOK_CHECKOUT_UNSUCCESS = "That book is not available.";
     private final String BOOK_RETURN_SUCCESS = "Thank you for returning the book.";
     private final String BOOK_RETURN_UNSUCCESS = "That is not a valid book to return.";
+
+    private final String MOVIE_COLUMN = "Name\tYear\tDirector\tRating\n" +
+            "----------------------------------------\n";
+    private final String[] MOVIES_NAME = {"Movie1", "Movie2", "Movie3"};
+    private final Integer[] MOVIES_YEAR = {2015, 2016, 2017};
+    private final String[] MOVIES_DIRECTOR = {"Director1", "Director2", "Director3"};
+    private final Integer[] MOVIES_RATING = {8, null, 10};
 
     @Before
     public void setOutStream() {
@@ -64,7 +71,7 @@ public class ExampleTest {
     public void testMain() {
         mockUserInput("1");
         BibliotecaApp.main(null);
-        assertEquals(WELCOME_MSG + MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(WELCOME_MSG + "\n" + MAIN_MENU_FULL_PROMPT + "\n" +
                 String.join("\n", BOOKS_NAME), getOutput());
     }
 
@@ -86,7 +93,7 @@ public class ExampleTest {
         assertEquals(BOOK_COLUMN +
                         String.format("%s\t%s\t%s\n", BOOKS_NAME[0], BOOKS_AUTHOR[0], BOOKS_YEAR[0]) +
                         String.format("%s\t%s\t%s\n", BOOKS_NAME[1], BOOKS_AUTHOR[1], BOOKS_YEAR[1]) +
-                        String.format("%s\t%s\t%s\n", BOOKS_NAME[2], BOOKS_AUTHOR[2], BOOKS_YEAR[2])
+                        String.format("%s\t%s\t%s", BOOKS_NAME[2], BOOKS_AUTHOR[2], BOOKS_YEAR[2])
                 , getOutput());
     }
 
@@ -109,7 +116,7 @@ public class ExampleTest {
 
     @Test
     public void testMainMenuUntilQuit() {
-        mockUserInput("1 1 4");
+        mockUserInput("1 1 5");
         bibliotecaApp.printMainMenu();
         assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
                 String.join("\n", BOOKS_NAME) + "\n" +
@@ -171,5 +178,16 @@ public class ExampleTest {
         assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
                 BOOK_RETURN_UNSUCCESS + "\n" +
                 BOOK_RETURN_UNSUCCESS, getOutput());
+    }
+
+    @Test
+    public void testListMovies() {
+        mockUserInput("4");
+        bibliotecaApp.listMovie();
+        assertEquals(MOVIE_COLUMN +
+                        String.format("%s\t%d\t%s\t%s\n", MOVIES_NAME[0], MOVIES_YEAR[0], MOVIES_DIRECTOR[0], MOVIES_RATING[0]) +
+                        String.format("%s\t%d\t%s\t%s\n", MOVIES_NAME[1], MOVIES_YEAR[1], MOVIES_DIRECTOR[1], MOVIES_RATING[1] == null ? "unrated" : null) +
+                        String.format("%s\t%d\t%s\t%s", MOVIES_NAME[2], MOVIES_YEAR[2], MOVIES_DIRECTOR[2], MOVIES_RATING[2]),
+                getOutput());
     }
 }
