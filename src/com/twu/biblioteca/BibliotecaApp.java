@@ -39,16 +39,15 @@ public class BibliotecaApp {
     }
 
     public void printMainMenu() {
-        String MAIN_MENU_HEAD = "---------------\n" + "" +
-                "Menu\n"
-                + "---------------";
-        String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. List Movies", "5. Quit"};
-        String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
-        System.out.println(MAIN_MENU_HEAD);
-        for (String item : MAIN_MENU_ITEM) {
-            System.out.println(item);
-        }
-        System.out.println(MAIN_MENU_TIP);
+        Menu menu = new Menu();
+        menu.addMenuItem(new MenuItem("List Books"));
+        menu.addMenuItem(new MenuItem("Checkout Book"));
+        menu.addMenuItem(new MenuItem("Return Book"));
+        menu.addMenuItem(new MenuItem("List Movies"));
+        menu.addMenuItem(new MenuItem("Login", MenuItem.Visibility.guestRequired));
+        menu.addMenuItem(new MenuItem("Show user information", MenuItem.Visibility.loginRequired));
+        menu.addMenuItem(new MenuItem("Quit"));
+        menu.printMenu();
 
         menuChoiceHandler();
     }
@@ -73,6 +72,12 @@ public class BibliotecaApp {
                         this.listMovie();
                         break;
                     case 5:
+                        if (UserManager.getLoginedUser() == null)
+                            UserManager.login();
+                        else
+                            UserManager.getLoginedUser().printInformation();
+                        break;
+                    case 6:
                         System.out.println("Bye Bye!");
                         toQuit = true;
                         break;

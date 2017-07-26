@@ -28,10 +28,9 @@ public class ExampleTest {
     private final String MAIN_MENU_HEAD = "---------------\n" +
             "Menu\n"
             + "---------------\n";
-    private final String[] MAIN_MENU_ITEM = {"1. List Books", "2. Checkout Book", "3. Return Book", "4. List Movies", "5. Quit"};
-    private final String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", MAIN_MENU_ITEM.length);
+    private final String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", TestHelper.generateFormattedMenuItem().split("\n").length);
     private final String MAIN_MENU_FULL_PROMPT = MAIN_MENU_HEAD +
-            TestHelper.generateFormattedMenuItem(MAIN_MENU_ITEM) +
+            TestHelper.generateFormattedMenuItem() +
             MAIN_MENU_TIP;
     private final String MAIN_MENU_ERR_MSG = "Select a valid option!\n";
     private final String MAIN_MENU_QUIT_MSG = "Bye Bye!";
@@ -54,6 +53,9 @@ public class ExampleTest {
     private final String USER_PASSWORD = "123123";
     private final String USER_LIBRARY_NUMBER_INPUT_PROMPT = "Login:\nPlease input your library number:";
     private final String USER_PASSWORD_INPUT_PROMPT = "Please input your password:";
+    private final String USER_NAME = "user1";
+    private final String USER_EMAIL = "user1@thoughtworks.com";
+    private final String USER_PHONE = "123456789";
 
     @Before
     public void setOutStream() {
@@ -80,12 +82,18 @@ public class ExampleTest {
         return outputStream.toString().trim();
     }
 
+    public String getFullMainMenuPrompt() {
+        return MAIN_MENU_HEAD +
+                TestHelper.generateFormattedMenuItem() +
+                MAIN_MENU_TIP;
+    }
+
     @Test
     public void testMain() {
-        mockUserInput("1");
+        mockUserInput("6");
         BibliotecaApp.main(null);
-        assertEquals(WELCOME_MSG + "\n" + MAIN_MENU_FULL_PROMPT + "\n" +
-                String.join("\n", BOOKS_NAME), getOutput());
+        assertEquals(WELCOME_MSG + "\n" + getFullMainMenuPrompt() + "\n" + MAIN_MENU_QUIT_MSG
+                , getOutput());
     }
 
     @Test
@@ -114,7 +122,7 @@ public class ExampleTest {
     public void testMainMenu() {
         mockUserInput("1");
         bibliotecaApp.printMainMenu();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 String.join("\n", BOOKS_NAME), getOutput());
     }
 
@@ -122,16 +130,16 @@ public class ExampleTest {
     public void testMainMenuWithInvalidOption() {
         mockUserInput("0 1");
         bibliotecaApp.printMainMenu();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 MAIN_MENU_ERR_MSG +
                 String.join("\n", BOOKS_NAME), getOutput());
     }
 
     @Test
     public void testMainMenuUntilQuit() {
-        mockUserInput("1 1 5");
+        mockUserInput("1 1 6");
         bibliotecaApp.printMainMenu();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 String.join("\n", BOOKS_NAME) + "\n" +
                 String.join("\n", BOOKS_NAME) + "\n" +
                 MAIN_MENU_QUIT_MSG, getOutput());
@@ -151,7 +159,7 @@ public class ExampleTest {
         UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("2 Book2");
         bibliotecaApp.printMainMenu();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 BOOK_CHECKOUT_SUCCESS, getOutput());
     }
 
@@ -160,7 +168,7 @@ public class ExampleTest {
         UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("2 Book2 2 Book2 2 Book0");
         bibliotecaApp.printMainMenu();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 BOOK_CHECKOUT_SUCCESS + "\n" +
                 BOOK_CHECKOUT_UNSUCCESS + "\n" +
                 BOOK_CHECKOUT_UNSUCCESS, getOutput());
@@ -173,7 +181,7 @@ public class ExampleTest {
         bibliotecaApp.printMainMenu();
         bibliotecaApp.returnBook("Book2");
         bibliotecaApp.listBook();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 BOOK_CHECKOUT_SUCCESS + "\n" +
                 BOOK_RETURN_SUCCESS + "\n" +
                 String.join("\n", BOOKS_NAME), getOutput());
@@ -184,7 +192,7 @@ public class ExampleTest {
         UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("2 Book2 3 Book2");
         bibliotecaApp.printMainMenu();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 BOOK_CHECKOUT_SUCCESS + "\n" +
                 BOOK_RETURN_SUCCESS, getOutput());
     }
@@ -194,7 +202,7 @@ public class ExampleTest {
         UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
         mockUserInput("3 Book2 3 Book0");
         bibliotecaApp.printMainMenu();
-        assertEquals(MAIN_MENU_FULL_PROMPT + "\n" +
+        assertEquals(getFullMainMenuPrompt() + "\n" +
                 BOOK_RETURN_UNSUCCESS + "\n" +
                 BOOK_RETURN_UNSUCCESS, getOutput());
     }
@@ -239,5 +247,23 @@ public class ExampleTest {
                         USER_PASSWORD_INPUT_PROMPT + "\n" +
                         BOOK_CHECKOUT_SUCCESS,
                 getOutput());
+    }
+
+    @Test
+    public void testUserInformation() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
+        mockUserInput("5");
+        bibliotecaApp.printMainMenu();
+        assertEquals(getFullMainMenuPrompt() + "\n" +
+                String.format("name: %s\nemail: %s\nphone: %s", USER_NAME, USER_EMAIL, USER_PHONE), getOutput());
+    }
+
+    @Test
+    public void testLoginedMainMenu() {
+        UserManager.auth(USER_LIBRARY_NUMBER, USER_PASSWORD);
+        mockUserInput("6");
+        bibliotecaApp.printMainMenu();
+        assertEquals(getFullMainMenuPrompt() + "\n" +
+                MAIN_MENU_QUIT_MSG, getOutput());
     }
 }

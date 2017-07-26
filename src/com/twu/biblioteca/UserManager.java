@@ -8,16 +8,16 @@ import java.util.Scanner;
  * Created by responsible on 17-7-25.
  */
 public class UserManager {
-    private static final Map<String, String> users = new HashMap<String, String>();
+    private static final Map<String, User> users = new HashMap<String, User>();
     private static User loginedUser = null;
 
     static {
-        users.put("001-1000", "123123");
-        users.put("001-1001", "123123");
-        users.put("001-1002", "123123");
+        users.put("001-1000", new User("001-1000", "123123", "user1", "user1@thoughtworks.com", "123456789"));
+        users.put("001-1001", new User("001-1001", "123123"));
+        users.put("001-1002", new User("001-1002", "123123"));
     }
 
-    public User login() {
+    public static User login() {
         String USER_LIBRARY_NUMBER_INPUT_PROMPT = "Login:\nPlease input your library number:";
         String USER_PASSWORD_INPUT_PROMPT = "Please input your password:";
         String USER_AUTH_FAIL = "Wrong library number or password!";
@@ -38,8 +38,8 @@ public class UserManager {
     }
 
     public static User auth(String libraryNumber, String password) {
-        if (password.equals(users.get(libraryNumber))) {
-            loginedUser = new User(libraryNumber);
+        if (users.get(libraryNumber) != null && password.equals(users.get(libraryNumber).getPassword())) {
+            loginedUser = users.get(libraryNumber);
             return loginedUser;
         } else
             return null;
