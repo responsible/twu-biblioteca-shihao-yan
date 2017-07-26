@@ -17,7 +17,7 @@ public class UserManager {
         users.put("001-1002", new User("001-1002", "123123"));
     }
 
-    public static User login() {
+    public static User getInputAndLogin() {
         String USER_LIBRARY_NUMBER_INPUT_PROMPT = "Login:\nPlease input your library number:";
         String USER_PASSWORD_INPUT_PROMPT = "Please input your password:";
         String USER_AUTH_FAIL = "Wrong library number or password!";

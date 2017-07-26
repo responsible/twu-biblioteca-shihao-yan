@@ -18,6 +18,15 @@ public class Menu {
         String MAIN_MENU_TIP = String.format("---------------\nPlease select your option (1-%d):", calcMenuItemCount());
         System.out.println(MAIN_MENU_HEAD);
 
+        List<MenuItem> loginRelatedMenuItem = generateLoginRelatedMenu();
+        for (MenuItem menuItem : loginRelatedMenuItem) {
+            System.out.printf("%d. %s\n", loginRelatedMenuItem.indexOf(menuItem) + 1, menuItem.getTitle());
+        }
+
+        System.out.println(MAIN_MENU_TIP);
+    }
+
+    private List<MenuItem> generateLoginRelatedMenu() {
         boolean isLogined = UserManager.getLoginedUser() != null;
         List<MenuItem> loginRelatedMenuItem = new ArrayList<MenuItem>();
         for (MenuItem menuItem : menuItems) {
@@ -28,11 +37,7 @@ public class Menu {
             else if (!isLogined && menuItem.getVisibility() == MenuItem.Visibility.guestRequired)
                 loginRelatedMenuItem.add(menuItem);
         }
-        for (MenuItem menuItem : loginRelatedMenuItem) {
-            System.out.printf("%d. %s\n", loginRelatedMenuItem.indexOf(menuItem) + 1, menuItem.getTitle());
-        }
-
-        System.out.println(MAIN_MENU_TIP);
+        return loginRelatedMenuItem;
     }
 
     private int calcMenuItemCount() {

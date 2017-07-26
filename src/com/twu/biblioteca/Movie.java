@@ -1,14 +1,21 @@
 package com.twu.biblioteca;
 
+import java.util.Arrays;
+
 /**
  * Created by responsible on 17-7-25.
  */
 public class Movie {
+    private static Movie[] movies = {new Movie("Movie1", 2015, "Director1", 8),
+            new Movie("Movie2", 2016, "Director2"),
+            new Movie("Movie3", 2017, "Director3", 10)};
+
     private String name;
     private Integer year;
     private String director;
     private Integer rating;
     private Status status;
+
 
     public enum Status {
         available, checkedout;
@@ -83,5 +90,28 @@ public class Movie {
     @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
+    }
+
+    public static void listAll() {
+        String MOVIE_COLUMN = "Name\tYear\tDirector\tRating\n" +
+                "----------------------------------------";
+        System.out.println(MOVIE_COLUMN);
+        for (Movie movie : movies) {
+            if (movie.getStatus() == Movie.Status.available)
+                System.out.println(String.format("%s\t%d\t%s\t%s", movie.getName(), movie.getYear(), movie.getDirector(), movie.getRating() == null ? "unrated" : movie.getRating()));
+        }
+    }
+
+    public void checkout() {
+        String MOVIE_CHECKOUT_SUCCESS = "Thank you! Enjoy the movie.";
+        String MOVIE_CHECKOUT_UNSUCCESS = "That movie is not available.";
+
+        int movieId = Arrays.asList(movies).indexOf(this);
+        if (movieId != -1 && movies[movieId].getStatus() == Movie.Status.available) {
+            movies[movieId].setStatus(Movie.Status.checkedout);
+            System.out.println(MOVIE_CHECKOUT_SUCCESS);
+        } else {
+            System.out.println(MOVIE_CHECKOUT_UNSUCCESS);
+        }
     }
 }
